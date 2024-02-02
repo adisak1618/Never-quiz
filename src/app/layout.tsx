@@ -20,6 +20,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <title>Todo App</title>
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
+        />
+      </head>
       <body className={clsx(inter.className, "bg-gray-200")}>
         <AuthProvider>
           <QueryProvider>{children}</QueryProvider>
