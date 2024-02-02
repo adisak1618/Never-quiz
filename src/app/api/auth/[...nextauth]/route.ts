@@ -43,7 +43,7 @@ export const authOptions: AuthOptions = {
           return {
             id: "",
             accessToken: data.token,
-            email: "",
+            email: credentials?.email,
             firstName: "",
             lastName: "",
           };

@@ -7,9 +7,10 @@ import { TodoItem } from "components/TodoItem";
 import { TodosSkeleton } from "components/TodosSkeleton";
 import { parseTodosItem } from "components/TypeGuard/TodoItemType";
 import { LogOutIcon } from "lucide-react";
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 
 export default function Home() {
+  const { data: user } = useSession();
   const { isPending, error, data } = useQuery({
     queryKey: ["todos"],
     queryFn: () =>
@@ -38,6 +39,10 @@ export default function Home() {
         {isPending && <TodosSkeleton />}
         {todosData?.length === 0 && (
           <div className="py-20 px-4 text-center">
+            <p className="text-[120px] font-bold">HI👋</p>
+            <p className="text-[40px] text-gray-900 my-6 whitespace-break-spaces break-words">
+              {user?.user?.email}
+            </p>
             <p className="text-2xl text-gray-700">
               Click + Button to create your new todo
             </p>

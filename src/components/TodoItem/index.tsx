@@ -11,6 +11,7 @@ import {
   useTransform,
 } from "framer-motion";
 import { Trash2Icon, CheckCheckIcon } from "lucide-react";
+import { useSession } from "next-auth/react";
 
 const deleteTodoasync = async ({ id }: { id: string }) => {
   const response = await axiosClient.delete(`/todos/${id}`);
@@ -23,6 +24,7 @@ const deleteTodoasync = async ({ id }: { id: string }) => {
 };
 
 export function TodoItem(todo: TodoItemType) {
+  const { data: user } = useSession();
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const { mutateAsync } = useMutation({
@@ -93,16 +95,14 @@ export function TodoItem(todo: TodoItemType) {
           onDragEnd={handleDragEnd}
         >
           <div className="flex gap-3">
-            <p className="flex-1 font-bold">Adisakchaiyakul</p>
+            <p className="flex-1 font-bold">{user?.user?.email}</p>
             <div className="flex gap-2 text-gray-400">
               <p>{format(new Date(todoData?.createdAt || ""), "dd MMM")}</p>
               <p>{format(new Date(todoData?.createdAt || ""), "hh:mm")}</p>
             </div>
           </div>
           <p className="line-clamp-1 pt-1">{todoData?.title}</p>
-          <p className="line-clamp-1 text-gray-400 font-light">
-            {todoData?.description}
-          </p>
+          <p className="text-gray-400 font-light">{todoData?.description}</p>
         </motion.div>
         <motion.div
           style={{ opacity: doneX }}
