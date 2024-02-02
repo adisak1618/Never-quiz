@@ -15,10 +15,6 @@ export default function Home() {
         console.log("res", res);
         return res.data;
       }),
-    // queryFn: () =>
-    //   fetch("https://api.github.com/repos/TanStack/query").then((res) =>
-    //     res.json()
-    //   ),
   });
 
   return (
@@ -29,9 +25,11 @@ export default function Home() {
         </h1>
       </div>
       <div className="flex-1 py-4">
-        {parseTodosItem(data)?.map((todo) => (
-          <TodoItem key={todo._id} {...todo} />
-        ))}
+        {parseTodosItem(data)
+          ?.reverse()
+          ?.map((todo) => (
+            <TodoItem key={todo._id} {...todo} />
+          ))}
       </div>
       <AddTodoButton />
     </div>
