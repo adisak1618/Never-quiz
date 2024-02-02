@@ -3,7 +3,7 @@ import Credentials from "next-auth/providers/credentials";
 import type { JWT } from "next-auth/jwt";
 import axios from "axios";
 
-export const authOptions: AuthOptions = {
+const authOptions: AuthOptions = {
   
   session: {
     strategy: "jwt",
