@@ -38,7 +38,7 @@ export const Modal = ({
     <Backdrop onClick={handleClose}>
       <motion.div
         onClick={(e) => e.stopPropagation()}
-        className="modal orange-gradient bg-white mx-auto max-w-screen-md w-full md:w-[calc(100%-48px)] h-full md:h-auto md:max-h-[calc(100%-48px)] md:rounded-md"
+        className="modal z-50 relative orange-gradient bg-white mx-auto max-w-screen-md w-full md:w-[calc(100%-48px)] h-full md:h-auto md:max-h-[calc(100%-48px)] md:rounded-md"
         variants={dropIn}
         initial="hidden"
         animate="visible"

@@ -24,7 +24,7 @@ export default function Home() {
           To(Never) Do List
         </h1>
       </div>
-      <div className="flex-1 py-4">
+      <div className="flex-1 py-4 space-y-3">
         {parseTodosItem(data)
           ?.reverse()
           ?.map((todo) => (
