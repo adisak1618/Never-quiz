@@ -1,3 +1,6 @@
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import axiosClient from "components/AxiosClient";
+import { useToast } from "components/ui/use-toast";
 import { TodoItemType, parseTodoItem } from "components/TypeGuard/TodoItemType";
 import { format } from "date-fns";
 import {
@@ -8,7 +11,26 @@ import {
   useTransform,
 } from "framer-motion";
 import { Trash2Icon, CheckCheckIcon } from "lucide-react";
+
+const deleteTodoasync = async ({ id }: { id: string }) => {
+  const response = await axiosClient.delete(`/todos/${id}`);
+
+  if (response.status !== 200) {
+    throw new Error("Failed to update user");
+  }
+
+  return "success";
+};
+
 export function TodoItem(todo: TodoItemType) {
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
+  const { mutateAsync } = useMutation({
+    mutationFn: deleteTodoasync,
+    onSuccess: () => {
+      queryClient.invalidateQueries();
+    },
+  });
   const todoData = parseTodoItem(todo);
   const controls = useDragControls();
   const x = useMotionValue(0);
@@ -19,18 +41,48 @@ export function TodoItem(todo: TodoItemType) {
     clamp: true,
   });
 
-  const handleDragEnd = (
+  const handleDragEnd = async (
     _: MouseEvent | TouchEvent | PointerEvent,
     info: PanInfo
   ) => {
-    // alert(info.offset.x);
-    // x.set(0);
+    if (info.offset.x >= 200) {
+      await mutateAsync({
+        id: todoData?._id!,
+      });
+      toast({
+        title: `Todo: ${todoData?.title} has been delete!`,
+      });
+    }
+    if (info.offset.x <= -200) {
+      toast({
+        title: "Todo one action is not exist",
+        description: "there is no api for this feature yet!",
+      });
+    }
   };
 
   return (
     <div className="px-2">
       {/* <motion.div style={{ x: x }}>HI</motion.div> */}
-      <motion.div className="rounded-md relative">
+      <motion.div
+        initial={{
+          x: "-100%",
+          opacity: 0,
+        }}
+        whileInView={{
+          x: "0%",
+          opacity: 1,
+        }}
+        exit={{
+          x: "-100%",
+          opacity: 0,
+        }}
+        viewport={{
+          once: true,
+        }}
+        transition={{ duration: 0.2 }}
+        className="rounded-md relative"
+      >
         <motion.div
           className="px-3 py-2 border border-gray-200 bg-white rounded-md mt-1 relative z-10 cursor-pointer"
           style={{ x }}
